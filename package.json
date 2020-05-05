@@ -1,0 +1,35 @@
+{
+  "name": "erp-rpg-api",
+  "version": "1.0.0",
+  "description": "API for skills management software",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcruzaltimetrik/erp-rpg-api.git"
+  },
+  "keywords": [
+    "rpg",
+    "erp",
+    "api",
+    "node",
+    "express",
+    "mongodb",
+    "skills",
+    "skill",
+    "managment",
+    "hr"
+  ],
+  "author": "Dario Cruz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcruzaltimetrik/erp-rpg-api/issues"
+  },
+  "homepage": "https://github.com/dcruzaltimetrik/erp-rpg-api#readme"
+}
