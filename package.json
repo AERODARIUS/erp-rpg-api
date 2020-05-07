@@ -4,7 +4,9 @@
   "description": "API for skills management software",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.12"
   },
   "devDependencies": {},
   "scripts": {
