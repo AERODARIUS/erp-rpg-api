@@ -4,7 +4,6 @@
 
 It handles employee data as an RPG character stats.
 
-
 ## Features checklist:
 
 - User CRUD (Users are employees)
@@ -28,10 +27,9 @@ It handles employee data as an RPG character stats.
   - Ranking list for each role
   - Unique ranking list for the hole company, the ranking position will depend on the role that each employee selected
 
-
 ## Project setup
 
-Run `npm install`
+    npm install
 
 Setup MongoDB Server, follow these steps: https://github.com/mongodb/node-mongodb-native#start-a-mongodb-server
 
@@ -46,7 +44,6 @@ Add an **.env** file to the root of the project with the following content:
     # Port
     PORT=27017
 
-
 ## Seeding [WIP]
 
 Open a terminal execute `mongo` command, then run the following:
@@ -54,7 +51,15 @@ Open a terminal execute `mongo` command, then run the following:
     use erp-rpg
     db.users.insert({"name" : "admin"})
 
-
 ## Running the project locally
 
-Run `npm start`
+    npm start
+
+    # Start development server with recompile option after detecting changes
+    npm run start-dev
+
+
+## Testing the project
+
+    npm test
+
