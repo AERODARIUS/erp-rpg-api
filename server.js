@@ -1,10 +1,11 @@
-var express = require('express');
-var app = express();
-var routes = require('./src/routes');
+require("./src/database");
+var express = require("express");
+var routes = require("./src/routes");
 
-app.use('/', routes);
+var server = express();
 
-app.listen(3000, function () {
-  console.log('Server listening on port 3000!');
+server.use("/", routes);
+
+server.listen(8000, function () {
+  console.log("Server listening on port 8000!");
 });
-

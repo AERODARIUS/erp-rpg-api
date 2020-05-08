@@ -2,11 +2,6 @@ var express = require('express');
 var router = express.Router();
 var usersRouter = require('./users');
 
-router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
-  next();
-});
-
 router.use('/users', usersRouter);
 
 // ERP-RPG Home page
