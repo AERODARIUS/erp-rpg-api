@@ -61,6 +61,17 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.pre("save", function (next) {
+  let user = this;
+
+  // Only hash the password if it has been modified (or is new)
+  if (!user.isModified("password")) return next();
+
+  // TODO: Add validations & encrypt password
+  // e.g.: user.isModified("anyfield"), user.otherfield = anyvalue
+  next();
+});
+
 const UserModel = mongoose.model("User", userSchema);
 
 module.exports = UserModel;
