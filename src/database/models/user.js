@@ -1,6 +1,6 @@
 const validator = require("validator");
 const mongoose = require("mongoose");
-const dateRegExp = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+const regexprs = require("../../common/regexprs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: function (birthDate) {
-        return validator.matches(birthDate, dateRegExp);
+        return validator.matches(birthDate, regexprs.date);
       },
     },
   },
@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
   },
   created: {
     type: Number,
-    default: (new Date()).getTime(),
+    default: new Date().getTime(),
   },
   active: {
     type: Boolean,
