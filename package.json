@@ -8,7 +8,8 @@
     "express": "^4.17.1",
     "jest": "^26.0.1",
     "mongodb": "^3.5.7",
-    "mongoose": "^5.9.12"
+    "mongoose": "^5.9.12",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
