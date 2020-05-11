@@ -4,7 +4,7 @@ const UserModel = require("../database/models/user");
 const query = UserModel.find().select("name -_id");
 
 // Users route
-usersRouter.get("/", function (req, res) {
+usersRouter.get("/", function (req, res, next) {
   query.exec(function (err, docs) {
     if (err) return next(err);
     res.send(docs);
