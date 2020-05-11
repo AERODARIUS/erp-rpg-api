@@ -1,10 +1,4 @@
-require("./src/database");
-var express = require("express");
-var routes = require("./src/routes");
-
-var app = express();
-
-app.use("/", routes);
+var app = require("./src/app");
 
 const server = app.listen(8000, function () {
   console.log("Server listening on port 8000!");

@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 
-mongoose.connect("mongodb://localhost/erp-rpg", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+function connect() {
+  return mongoose.connect(config.databaseURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
+
+function disconnect(done) {
+  return mongoose.connection.close(done);
+}
+
+module.exports = {
+  connect,
+  disconnect,
+};
