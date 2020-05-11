@@ -1,6 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
-const UserModel = require("../../database/models/user");
+const UserModel = require("../database/models/user");
 const query = UserModel.find().select("name -_id");
 
 // Users route
