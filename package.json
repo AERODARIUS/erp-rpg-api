@@ -4,13 +4,14 @@
   "description": "API for skills management software",
   "main": "index.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jest": "^26.0.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.12"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "jest": "^26.0.1",
     "nodemon": "^2.0.3",
     "supertest": "^4.0.2"
   },
