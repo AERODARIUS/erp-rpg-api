@@ -1,7 +1,7 @@
-var dotenv = require("dotenv").config();
+var dotenv = require("dotenv");
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 var envFound = dotenv.config();
 
@@ -10,7 +10,17 @@ if (envFound.error) {
   throw new Error("Couldn't find .env file");
 }
 
-export default {
-  port: parseInt(process.env.PORT, 10),
-  databaseURL: process.env.MONGODB_URI,
-};
+function getConfigByEnv() {
+  let config = {
+    port: parseInt(process.env.PORT, 10),
+    databaseURL: process.env.MONGODB_URI,
+  };
+
+  if (process.env.NODE_ENV === "test") {
+    config.databaseURL = process.env.MONGODB_TEST_URI;
+  }
+
+  return config;
+}
+
+module.exports = getConfigByEnv();
