@@ -1,10 +1,11 @@
-var express = require("express");
-var usersRouter = express.Router();
-var userModel = require("../../database/models/user");
+const express = require("express");
+const usersRouter = express.Router();
+const UserModel = require("../../database/models/user");
+const query = UserModel.find().select("name -_id");
 
 // Users route
 usersRouter.get("/", function (req, res) {
-  userModel.find(function (err, docs) {
+  query.exec(function (err, docs) {
     if (err) return next(err);
     res.send(docs);
   });
