@@ -50,12 +50,20 @@ usersRouter.post("/", (req, res) => {
 });
 
 usersRouter.get("/:nickname", (req, res) => {
-  const userQuery = UserModel.findById(req.params.nickname).select();
+  const nickname = req.params.nickname;
+  const userQuery = UserModel.findById(nickname).select();
 
   userQuery
     .exec()
     .then((user) => {
-      res.json(user);
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({
+          message: "User doesn't exist",
+          nickname: nickname,
+        });
+      }
     })
     .catch((err) => {
       //Shouldn't happen
@@ -71,10 +79,26 @@ usersRouter.put("/:nickname", (req, res) => {
 });
 
 usersRouter.delete("/:nickname", (req, res) => {
-  // TODO: Implement deleting an existent user
-  // code to delete an article...
-  //res.json({ deleted: id });
-  res.status(501).send("Not implemented yet");
+  const nickname = req.params.nickname;
+
+  UserModel.deleteOne({ _id: nickname })
+    .then(({ deletedCount }) => {
+      if (deletedCount > 0) {
+        res.json({
+          message: "User deleted successfully",
+          nickname: nickname,
+        });
+      } else {
+        res.status(404).json({
+          message: "User doesn't exist",
+          nickname: nickname,
+        });
+      }
+    })
+    .catch((err) => {
+      //Shouldn't happen
+      res.status(500).json(err);
+    });
 });
 
 module.exports = usersRouter;
