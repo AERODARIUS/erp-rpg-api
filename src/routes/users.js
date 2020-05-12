@@ -1,7 +1,7 @@
 const express = require("express");
 const usersRouter = express.Router();
 const UserModel = require("../database/models/users");
-const query = UserModel.find({}).select("nickname name");
+const query = UserModel.find({}).select();
 
 // Users route
 usersRouter.get("/", function (req, res, next) {
@@ -13,11 +13,11 @@ usersRouter.get("/", function (req, res, next) {
 
 usersRouter.post("/", (req, res) => {
   const user = new UserModel(req.body);
-  const queryExistingUser = UserModel.find({
-    $or: [{ email: user.email }, { nickname: user.nickname }],
+  const queryExistingUsers = UserModel.find({
+    $or: [{ email: user.email }, { _id: user.nickname }],
   });
 
-  queryExistingUser
+  queryExistingUsers
     .exec()
     .then((dbUsers) => {
       if (dbUsers.length > 0) {
@@ -39,11 +39,27 @@ usersRouter.post("/", (req, res) => {
           });
         })
         .catch((err) => {
-          res.json(err);
+          //Forward db validation errors
+          res.status(400).json(err);
         });
     })
     .catch((err) => {
-      res.json(err);
+      //Shouldn't happen
+      res.status(500).json(err);
+    });
+});
+
+usersRouter.get("/:nickname", (req, res) => {
+  const userQuery = UserModel.findById(req.params.nickname).select();
+
+  userQuery
+    .exec()
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      //Shouldn't happen
+      res.status(500).json(err);
     });
 });
 
@@ -56,7 +72,6 @@ usersRouter.put("/:nickname", (req, res) => {
 
 usersRouter.delete("/:nickname", (req, res) => {
   // TODO: Implement deleting an existent user
-  const { id } = req.params;
   // code to delete an article...
   //res.json({ deleted: id });
   res.status(501).send("Not implemented yet");
