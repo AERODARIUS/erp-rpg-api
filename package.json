@@ -29,6 +29,7 @@
   "scripts": {
     "start": "node server.js",
     "start-dev": "nodemon ./server.js localhost 8000",
+    "stop": "killall node",
     "seed": "echo \"Error: no seeding yet\" && exit 1",
     "test": "cross-env NODE_ENV=test jest"
   },
