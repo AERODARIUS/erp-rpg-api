@@ -7,24 +7,18 @@ const config = require("../../config");
 const userSchema = new mongoose.Schema({
   _id: {
     type: String,
-    default: function () {
-      return this.nickname;
-    },
-  },
-  name: {
-    type: String,
-    required: [true, "User name is required"],
-    trim: true,
-  },
-  nickname: {
-    type: String,
     validate: {
       validator: validator.isAlphanumeric,
       message: (props) =>
         `${props.value} is not a valid nickname, letters and numbers are only allowed`,
     },
-    index: { unique: true },
     required: [true, "nickname is required"],
+    trim: true,
+    alias: "nickname",
+  },
+  name: {
+    type: String,
+    required: [true, "User name is required"],
     trim: true,
   },
   email: {
@@ -68,6 +62,10 @@ const userSchema = new mongoose.Schema({
     default: true,
   },
 });
+
+userSchema
+  .set("toJSON", { getters: true, virtuals: true })
+  .set("toObject", { getters: true, virtuals: true });
 
 userSchema.pre("validate", function (next) {
   if (this.isModified("created")) {
