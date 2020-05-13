@@ -1,11 +1,13 @@
 const request = require("supertest");
 const app = require("../../src/app");
 const database = require("../../src/database");
-const UserModel = require("../../src/database/models/user");
+const UserModel = require("../../src/database/models/users");
+
 const currentDate = new Date();
+
 const userData = {
   name: "Test User",
-  created: currentDate.getTime(),
+  nickname: "testuser",
   gender: "male",
   name: "Clark",
   active: true,
@@ -33,7 +35,10 @@ describe("Users route", () => {
       .get("/users")
       .then((response) => {
         expect(response).toHaveProperty("statusCode", 200);
-        expect(response).toHaveProperty("body", [userData]);
+        expect(response.body).toHaveLength(1);
+        expect(response.body[0]).toMatchObject(
+          expect.objectContaining(userData)
+        );
         done();
       });
   });
