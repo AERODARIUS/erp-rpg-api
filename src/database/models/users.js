@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: validator.isEmail,
-      message: () => `Invalid email format`,
+      message: (props) => `Invalid email format: ${props.value}`,
     },
     required: [true, "email is required"],
     lowercase: true,
@@ -37,6 +37,8 @@ const userSchema = new mongoose.Schema({
       validator: function (birthDate) {
         return validator.matches(birthDate, regexprs.date);
       },
+      message: (props) =>
+        `Invalid date format: ${props.value}, sample date: 30-11-1990`,
     },
   },
   gender: {
