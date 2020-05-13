@@ -44,17 +44,14 @@ usersRouter.post("/", (req, res) => {
         });
     })
     .catch((err) => {
-      //Shouldn't happen
       res.status(500).json(err);
     });
 });
 
 usersRouter.get("/:nickname", (req, res) => {
   const nickname = req.params.nickname;
-  const userQuery = UserModel.findById(nickname).select();
 
-  userQuery
-    .exec()
+  UserModel.findById(nickname)
     .then((user) => {
       if (user) {
         res.json(user);
@@ -66,27 +63,30 @@ usersRouter.get("/:nickname", (req, res) => {
       }
     })
     .catch((err) => {
-      //Shouldn't happen
       res.status(500).json(err);
     });
 });
 
 usersRouter.put("/:nickname", (req, res) => {
-  // TODO: Impement update existent user
-  const { id } = req.params;
-  //res.json(req.body);
-  res.status(501).send("Not implemented yet");
-});
+  const { nickname } = req.params;
+  const user = new UserModel(req.body);
 
-usersRouter.delete("/:nickname", (req, res) => {
-  const nickname = req.params.nickname;
+  if (user.nickname) {
+    return res.status(400).json({
+      message: "nickname can't be changed",
+      user: user,
+    });
+  }
 
-  UserModel.deleteOne({ _id: nickname })
-    .then(({ deletedCount }) => {
-      if (deletedCount > 0) {
-        res.json({
-          message: "User deleted successfully",
-          nickname: nickname,
+  UserModel.findByIdAndUpdate(nickname, req.body, {
+    new: true,
+    runValidators: true,
+  })
+    .then((dbUser) => {
+      if (dbUser) {
+        return res.json({
+          message: "User updated successfully",
+          user: dbUser,
         });
       } else {
         res.status(404).json({
@@ -96,7 +96,28 @@ usersRouter.delete("/:nickname", (req, res) => {
       }
     })
     .catch((err) => {
-      //Shouldn't happen
+      res.status(500).json(err);
+    });
+});
+
+usersRouter.delete("/:nickname", (req, res) => {
+  const { nickname } = req.params;
+
+  UserModel.findByIdAndDelete(nickname)
+    .then((user) => {
+      if (user) {
+        res.json({
+          message: "User deleted successfully",
+          user: user,
+        });
+      } else {
+        res.status(404).json({
+          message: "User doesn't exist",
+          nickname: nickname,
+        });
+      }
+    })
+    .catch((err) => {
       res.status(500).json(err);
     });
 });
