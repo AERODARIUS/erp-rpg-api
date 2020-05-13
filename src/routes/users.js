@@ -54,13 +54,13 @@ usersRouter.get("/:nickname", (req, res) => {
   UserModel.findById(nickname)
     .then((user) => {
       if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({
-          message: "User doesn't exist",
-          nickname: nickname,
-        });
+        return res.json(user);
       }
+
+      res.status(404).json({
+        message: "User doesn't exist",
+        nickname: nickname,
+      });
     })
     .catch((err) => {
       res.status(500).json(err);
@@ -88,12 +88,12 @@ usersRouter.put("/:nickname", (req, res) => {
           message: "User updated successfully",
           user: dbUser,
         });
-      } else {
-        res.status(404).json({
-          message: "User doesn't exist",
-          nickname: nickname,
-        });
       }
+
+      res.status(404).json({
+        message: "User doesn't exist",
+        nickname: nickname,
+      });
     })
     .catch((err) => {
       res.status(500).json(err);
@@ -106,16 +106,16 @@ usersRouter.delete("/:nickname", (req, res) => {
   UserModel.findByIdAndDelete(nickname)
     .then((user) => {
       if (user) {
-        res.json({
+        return res.json({
           message: "User deleted successfully",
           user: user,
         });
-      } else {
-        res.status(404).json({
-          message: "User doesn't exist",
-          nickname: nickname,
-        });
       }
+
+      res.status(404).json({
+        message: "User doesn't exist",
+        nickname: nickname,
+      });
     })
     .catch((err) => {
       res.status(500).json(err);

@@ -73,7 +73,7 @@ userSchema.pre("validate", function (next) {
   if (this.isModified("created")) {
     throw "created is read only!";
   } else {
-    next();
+    return next();
   }
 });
 
@@ -85,7 +85,7 @@ userSchema.pre("save", function (next) {
   bcrypt.hash(this.password, config.SALT_WORK_FACTOR, (err, hash) => {
     // Store hash in your password DB.
     this.password = hash;
-    next();
+    return next();
   });
 });
 
