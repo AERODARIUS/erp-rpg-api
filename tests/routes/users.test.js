@@ -3,13 +3,10 @@ const app = require("../../src/app");
 const database = require("../../src/database");
 const UserModel = require("../../src/database/models/users");
 
-const currentDate = new Date();
-
 const userData = {
   name: "Test User",
   nickname: "testuser",
   gender: "male",
-  name: "Clark",
   active: true,
 };
 
@@ -21,7 +18,7 @@ function initializeUsers() {
 describe("Users route", () => {
   beforeAll(() => {
     database.connect();
-    users = initializeUsers();
+    initializeUsers();
   });
 
   afterAll((done) => {
@@ -30,16 +27,14 @@ describe("Users route", () => {
     });
   });
 
-  it("should list all the users", async (done) => {
-    return request(app)
-      .get("/users")
-      .then((response) => {
-        expect(response).toHaveProperty("statusCode", 200);
-        expect(response.body).toHaveLength(1);
-        expect(response.body[0]).toMatchObject(
-          expect.objectContaining(userData)
-        );
-        done();
-      });
-  });
+  it("should list all the users", async (done) => request(app)
+    .get("/users")
+    .then((response) => {
+      expect(response).toHaveProperty("statusCode", 200);
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0]).toMatchObject(
+        expect.objectContaining(userData),
+      );
+      done();
+    }));
 });

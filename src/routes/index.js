@@ -1,18 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var usersRouter = require('./users');
+const express = require("express");
 
-router.use('/users', usersRouter);
+const router = express.Router();
+const usersRouter = require("./users");
+
+router.use("/users", usersRouter);
 
 // ERP-RPG Home page
-router.get('/', function(req, res) {
-  res.send('Here start your journey.');
+router.get("/", (req, res) => {
+  res.send("Here start your journey.");
 });
 
-/// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 router.use((req, res, next) => {
-  const err = new Error('Not Found??');
-  err['status'] = 404;
+  const err = new Error("Not Found??");
+  err.status = 404;
   return next(err);
 });
 

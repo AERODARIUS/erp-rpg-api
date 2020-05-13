@@ -1,4 +1,4 @@
-var app = require("./src/app");
+const app = require("./src/app");
 
 const server = app.listen(8000);
 

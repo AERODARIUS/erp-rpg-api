@@ -1,9 +1,10 @@
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 
+const express = require("express");
 const database = require("./database");
-var express = require("express");
-var routes = require("./routes");
-var app = express();
+const routes = require("./routes");
+
+const app = express();
 
 
 database.connect();

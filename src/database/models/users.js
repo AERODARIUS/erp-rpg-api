@@ -9,8 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: validator.isAlphanumeric,
-      message: (props) =>
-        `${props.value} is not a valid nickname, letters and numbers are only allowed`,
+      message: (props) => `${props.value} is not a valid nickname, letters and numbers are only allowed`,
     },
     required: [true, "nickname is required"],
     trim: true,
@@ -34,11 +33,10 @@ const userSchema = new mongoose.Schema({
   birthDate: {
     type: String,
     validate: {
-      validator: function (birthDate) {
+      validator(birthDate) {
         return validator.matches(birthDate, regexprs.date);
       },
-      message: (props) =>
-        `Invalid date format: ${props.value}, sample date: 30-11-1990`,
+      message: (props) => `Invalid date format: ${props.value}, sample date: 30-11-1990`,
     },
   },
   gender: {
@@ -69,18 +67,20 @@ userSchema
   .set("toJSON", { getters: true, virtuals: true })
   .set("toObject", { getters: true, virtuals: true });
 
-userSchema.pre("validate", function (next) {
+userSchema.pre("validate", function preValidate(next) {
   if (this.isModified("created")) {
-    throw "created is read only!";
+    throw new Error("created is read only!");
   } else {
     return next();
   }
 });
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function preSave(next) {
   // Only hash the password if it has been modified (or is new)
-  if (!this.isModified("password")) return next();
-
+  if (!this.isModified("password")) {
+    next();
+    return;
+  }
   // Generate a salt and hash the password
   bcrypt.hash(this.password, config.SALT_WORK_FACTOR, (err, hash) => {
     // Store hash in your password DB.
@@ -89,10 +89,10 @@ userSchema.pre("save", function (next) {
   });
 });
 
-userSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return cb(err);
-    cb(null, isMatch);
+    return cb(null, isMatch);
   });
 };
 
