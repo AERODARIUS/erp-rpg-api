@@ -28,7 +28,7 @@ describe("Users route", () => {
   });
 
   it("should list all the users", async (done) => request(app)
-    .get("/users")
+    .get("/api/v1/users")
     .then((response) => {
       expect(response).toHaveProperty("statusCode", 200);
       expect(response.body).toHaveLength(1);

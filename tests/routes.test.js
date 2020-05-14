@@ -7,7 +7,7 @@ describe("Home page", () => {
     .then((response) => {
       expect(response).toHaveProperty("statusCode", 200);
       expect(response).toHaveProperty("body", {});
-      expect(response).toHaveProperty("text", "Here start your journey.");
+      expect(response).toHaveProperty("text", "Here starts your journey.");
     }));
 
   it("should display 404 page when not found", async () => request(app)
