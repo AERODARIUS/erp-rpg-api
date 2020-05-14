@@ -35,6 +35,7 @@
     "start-dev": "nodemon ./server.js localhost 8000",
     "stop": "killall node",
     "seed": "echo \"Error: no seeding yet\" && exit 1",
+    "pretest": "eslint src/",
     "test": "cross-env NODE_ENV=test jest"
   },
   "repository": {
