@@ -1,5 +1,7 @@
 # :notebook_with_decorative_cover: ERP-RPG API
 
+![Build](https://github.com/dcruzaltimetrik/erp-rpg-api/workflows/Build/badge.svg?branch=master)
+
 ## API for skills management software.
 
 It handles employee data as RPG character stats.
