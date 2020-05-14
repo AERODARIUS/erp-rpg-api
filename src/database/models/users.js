@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const regexprs = require("../../common/regexprs");
 const config = require("../../config");
 
+// User basic information
 const userSchema = new mongoose.Schema({
   _id: {
     type: String,
@@ -13,7 +14,7 @@ const userSchema = new mongoose.Schema({
     },
     required: [true, "nickname is required"],
     trim: true,
-    alias: "nickname",
+    alias: "nickname", // Saving space by avoiding saving redundant information
   },
   name: {
     type: String,
@@ -63,6 +64,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Enable viewing virtuals in queries, e.g.: nickname
 userSchema
   .set("toJSON", { getters: true, virtuals: true })
   .set("toObject", { getters: true, virtuals: true });
@@ -75,6 +77,7 @@ userSchema.pre("validate", function preValidate(next) {
   }
 });
 
+// Used for password encoding
 userSchema.pre("save", function preSave(next) {
   // Only hash the password if it has been modified (or is new)
   if (!this.isModified("password")) {

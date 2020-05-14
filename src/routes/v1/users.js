@@ -5,7 +5,7 @@ const UserModel = require("../../database/models/users");
 
 const query = UserModel.find({}).select();
 
-// Users route
+// List all users
 usersRouter.get("/", (req, res, next) => {
   query.exec((err, docs) => {
     if (err) {
@@ -17,9 +17,11 @@ usersRouter.get("/", (req, res, next) => {
   });
 });
 
+// Create user
 usersRouter.post("/", (req, res, next) => {
   const user = new UserModel(req.body);
 
+  // Check for unique constraints
   UserModel.find({
     $or: [{ email: user.email }, { _id: user.nickname }],
   })
@@ -35,6 +37,7 @@ usersRouter.post("/", (req, res, next) => {
         return;
       }
 
+      // Save to database if not exists
       user
         .save()
         .then((savedUser) => {
@@ -54,6 +57,8 @@ usersRouter.post("/", (req, res, next) => {
     });
 });
 
+
+// Show user data if exists
 usersRouter.get("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
 
@@ -75,6 +80,7 @@ usersRouter.get("/:nickname", (req, res, next) => {
     });
 });
 
+// Update user data
 usersRouter.put("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
   const user = new UserModel(req.body);
@@ -87,6 +93,7 @@ usersRouter.put("/:nickname", (req, res, next) => {
     return;
   }
 
+  // Update if exists
   UserModel.findByIdAndUpdate(nickname, req.body, {
     new: true,
     runValidators: true,
@@ -112,9 +119,12 @@ usersRouter.put("/:nickname", (req, res, next) => {
     });
 });
 
+
+// Delete user
 usersRouter.delete("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
 
+  // Delete if exists
   UserModel.findByIdAndDelete(nickname)
     .then((user) => {
       if (user) {

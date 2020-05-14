@@ -14,7 +14,7 @@ function getConfigByEnv() {
   const config = {
     port: parseInt(process.env.PORT, 10),
     databaseURL: process.env.MONGODB_URI,
-    SALT_WORK_FACTOR: 10,
+    SALT_WORK_FACTOR: 10, // For passowrd enconding
   };
 
   if (process.env.NODE_ENV === "test") {
