@@ -1,6 +1,7 @@
 # :notebook_with_decorative_cover: ERP-RPG API
 
 ![Build](https://github.com/dcruzaltimetrik/erp-rpg-api/workflows/Build/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/dcruzaltimetrik/erp-rpg-api/branch/master/graph/badge.svg?token=KH3HSQHLFG)](https://codecov.io/gh/dcruzaltimetrik/erp-rpg-api)
 
 ## API for skills management software.
 
