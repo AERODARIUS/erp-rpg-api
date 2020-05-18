@@ -41,7 +41,7 @@ usersRouter.post("/", (req, res, next) => {
       user
         .save()
         .then((savedUser) => {
-          res.json({
+          res.status(201).json({
             message: "User added successfully",
             savedUser,
           });
