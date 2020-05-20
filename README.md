@@ -36,7 +36,7 @@ It handles employee data as RPG character stats.
 
     npm install
 
-Setup MongoDB Server, follow these steps: https://github.com/mongodb/node-mongodThis API uses _URI Versioning_, any request to a resource should be performed under `/api/v{vesrion-number}/` path, for example: `/api/v1/users/`. By default, the path `/api/` stands for the latest version. For now, there is only version 1.b-native#start-a-mongodb-server
+Setup MongoDB Server, follow these steps: https://docs.mongodb.com/manual/administration/install-community/ API uses _URI Versioning_, any request to a resource should be performed under `/api/v{vesrion-number}/` path, for example: `/api/v1/users/`. By default, the path `/api/` stands for the latest version. For now, there is only version 1.b-native#start-a-mongodb-server
 
 Add an `.env` file to the root of the project with the following content:
 
