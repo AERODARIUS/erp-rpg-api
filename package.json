@@ -9,8 +9,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jest": "^26.0.1",
-    "mongodb": "^3.5.7",
-    "mongoose": "^5.9.12",
+    "pg-promise": "^10.5.6",
     "validator": "^13.0.0"
   },
   "devDependencies": {
@@ -34,7 +33,11 @@
     "start": "node server.js",
     "start-dev": "nodemon ./server.js localhost 8000",
     "stop": "killall node",
-    "seed": "echo \"Error: no seeding yet\" && exit 1",
+    "create": "node src/database/scripts/hello_world.js",
+    "reset": "echo \"Error: no reset script yet\" && exit 1",
+    "drop": "echo \"Error: no drop script yet\" && exit 1",
+    "migrate": "echo \"Error: no migrate script yet\" && exit 1",
+    "seed": "echo \"Error: no seed script yet\" && exit 1",
     "pretest": "eslint src/",
     "test": "cross-env NODE_ENV=test jest"
   },
@@ -48,7 +51,7 @@
     "api",
     "node",
     "express",
-    "mongodb",
+    "postgresqlL",
     "skills",
     "skill",
     "managment",

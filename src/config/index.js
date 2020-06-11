@@ -12,14 +12,23 @@ if (envFound.error) {
 
 function getConfigByEnv() {
   const config = {
-    port: parseInt(process.env.PORT, 10),
-    databaseURL: process.env.MONGODB_URI,
+    DB_CONNECTION: {
+      host: process.env.DATABASE_HOST,
+      port: process.env.DATABASE_PORT,
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      max: 30,
+    },
     SALT_WORK_FACTOR: 10, // For passowrd enconding
+    PAGE_SIZE: 20,
   };
 
+  /* TODO:
   if (process.env.NODE_ENV === "test") {
-    config.databaseURL = process.env.MONGODB_TEST_URI;
+    config.DATABASE_URL = process.env.TEST_DATABASE_URI;
   }
+  */
 
   return config;
 }

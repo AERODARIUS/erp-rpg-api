@@ -1,136 +1,83 @@
 const express = require("express");
-
-const usersRouter = express.Router();
 const UserModel = require("../../database/models/users");
 
-const query = UserModel.find({}).select();
+const usersRouter = express.Router();
 
 // List all users
 usersRouter.get("/", (req, res, next) => {
-  query.exec((err, docs) => {
-    if (err) {
-      next(err);
-      return;
-    }
-
-    res.send(docs);
-  });
-});
-
-// Create user
-usersRouter.post("/", (req, res, next) => {
-  const user = new UserModel(req.body);
-
-  // Check for unique constraints
-  UserModel.find({
-    $or: [{ email: user.email }, { _id: user.nickname }],
-  })
-    .then((dbUsers) => {
-      if (dbUsers.length > 0) {
-        const dbUser = dbUsers[0];
-
-        res.status(400).json({
-          error: `User already exists, choose a different ${
-            dbUser.email === user.email ? "email" : "nickname"
-          }`,
-        });
-        return;
-      }
-
-      // Save to database if not exists
-      user
-        .save()
-        .then((savedUser) => {
-          res.status(201).json({
-            message: "User added successfully",
-            savedUser,
-          });
-        })
-        .catch((err) => {
-          res.status(400).json(err);
-          return next(err);
-        });
+  UserModel.list()
+    .then((data) => {
+      res.status(200).send(data);
     })
-    .catch((err) => {
-      res.status(500).json("Internal Server Error");
-      return next(err);
+    .catch((error) => {
+      next(error);
     });
 });
-
 
 // Show user data if exists
 usersRouter.get("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
 
-  UserModel.findById(nickname)
-    .then((user) => {
-      if (user) {
-        res.json(user);
-        return;
+  UserModel.find([{ name: "nickname", value: nickname }])
+    .then((dbUsers) => {
+      if (dbUsers.length === 0) {
+        res.status(404).json({
+          message: "User doesn't exist",
+          nickname,
+        });
       }
 
-      res.status(404).json({
-        message: "User doesn't exist",
-        nickname,
-      });
+      if (dbUsers.length > 1) {
+        res.status(500).json({
+          message: "Internal Server Error",
+        });
+      }
+
+      res.status(200).send(dbUsers[0]);
     })
-    .catch((err) => {
-      res.status(500).json("Internal Server Error");
-      return next(err);
+    .catch((error) => {
+      next(error);
     });
 });
 
-// Update user data
+// Create user if not exists
+usersRouter.post("/", (req, res, next) => {
+  // Check for unique constraints and save to database
+  UserModel.add(req.body)
+    .then((savedUser) => {
+      res.status(201).json({
+        message: "User added successfully",
+        savedUser,
+      });
+    })
+    .catch((error) => next(error));
+});
+
+// Update user if exists
 usersRouter.put("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
-  const user = new UserModel(req.body);
 
-  if (user.nickname) {
-    res.status(400).json({
-      message: "nickname can't be changed",
-      user,
-    });
-    return;
-  }
-
-  // Update if exists
-  UserModel.findByIdAndUpdate(nickname, req.body, {
-    new: true,
-    runValidators: true,
-  })
-    .then((dbUser) => {
-      if (dbUser) {
-        res.json({
-          message: "User updated successfully",
-          user: dbUser,
-        });
-
-        return;
-      }
-
-      res.status(404).json({
-        message: "User doesn't exist",
-        nickname,
+  UserModel.update(nickname, req.body)
+    .then((savedUser) => {
+      res.status(200).send({
+        message: "User updated successfully",
+        user: savedUser,
       });
     })
-    .catch((err) => {
-      res.status(500).json("Internal Server Error");
-      return next(err);
-    });
+    .catch((error) => next(error));
 });
 
 
-// Delete user
+// Delete user if exists
 usersRouter.delete("/:nickname", (req, res, next) => {
   const { nickname } = req.params;
 
-  // Delete if exists
-  UserModel.findByIdAndDelete(nickname)
-    .then((user) => {
-      if (user) {
+  UserModel.delete(nickname)
+    .then((deletedUsers) => {
+      if (deletedUsers.length > 0) {
         res.json({
           message: "User deleted successfully",
-          user,
+          deletedUser: deletedUsers[0],
         });
 
         return;
@@ -141,10 +88,7 @@ usersRouter.delete("/:nickname", (req, res, next) => {
         nickname,
       });
     })
-    .catch((err) => {
-      res.status(500).json("Internal Server Error");
-      return next(err);
-    });
+    .catch((error) => next(error));
 });
 
 module.exports = usersRouter;

@@ -36,32 +36,27 @@ It handles employee data as RPG character stats.
 
     npm install
 
-Setup MongoDB Server, follow these steps: https://docs.mongodb.com/manual/administration/install-community/
-Then open mongo shell and execute `use erp-rpg` and `use erp-rpg-test` to start using development and test databases, the names may vary depending on your configuration.
+Download and install PostgreSQL: https://www.postgresql.org/download/
+Then run the migrations: `npm run migrate`
 
-
-ERP-RPG API uses _URI Versioning_, any request to a resource should be performed under `/api/v{vesrion-number}/` path, for example: `/api/v1/users/`. By default, the path `/api/` stands for the latest version. For now, there is only version 1.b-native#start-a-mongodb-server
-
+ERP-RPG API uses _URI Versioning_, any request to a resource should be performed under `/api/v{vesrion-number}/` path, for example: `/api/v1/users/`. By default, the path `/api/` stands for the latest version. For now, there is only version 1.
 
 Add an `.env` file to the root of the project with the following content:
 
 ```Shell
-# Mongo DB
+# Postgres DB
 # May vary, depending on the configuration chosen on the previous step
 
 # Local development
-MONGODB_URI='mongodb://localhost/erp-rpg'
+DATABASE_URI='postgres://postgres:postgres@localhost:5432'
 
-# Port
-PORT=27017
 ```
 
 ## Seeding [WIP]
 
-Open a terminal execute `mongo` command, then run the following:
+Now you have to setup your data manually, but in the future the following command will be available:
 
-    use erp-rpg
-    db.users.insert({"nickname" : "admin"})
+    npm run seed
 
 ## Running the project locally
 
